@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 
 public class Banco {
-    private ArrayList<Conta> contas = new ArrayList<>();
+    private final ArrayList<Conta> contas = new ArrayList<>();
 
     public void adicionarConta(Conta conta) {
         contas.add(conta);
@@ -75,8 +75,8 @@ public class Banco {
 
         if (valorTransferencia <= 0) return false;
 
-        if (contaOrigem.sacar(valorTransferencia)) {
-            contaDestino.depositar(valorTransferencia);
+        if (contaOrigem.enviarTransferencia(valorTransferencia, destino)) {
+            contaDestino.receberTransferencia(valorTransferencia, origem);
             return true;
         }
 

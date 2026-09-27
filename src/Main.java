@@ -19,6 +19,7 @@ public class Main {
             System.out.println("3 - Depositar");
             System.out.println("4 - Sacar");
             System.out.println("5 - Transferir");
+            System.out.println("6 - Ver Extrato");
             System.out.println("0 - Sair");
 
             System.out.print("Escolha uma opção: ");
@@ -106,6 +107,24 @@ public class Main {
                         System.out.println("Transferência realizada com sucesso!");
                     } else {
                             System.out.println("Transferencia não realizada!");
+                    }
+
+                    break;
+
+                case 6:
+
+                    System.out.println("\n=== Extrato ===");
+
+                    System.out.println("Número da conta: ");
+                    int numeroContaExtrato = scanner.nextInt();
+
+                    Conta contaExtrato = banco.buscarConta(numeroContaExtrato);
+
+                    if(contaExtrato != null) {
+                        contaExtrato.mostrarDados();
+                        contaExtrato.mostrarHistorico();
+                    } else {
+                        System.out.println("Conta não encontrada!");
                     }
 
                     break;
