@@ -8,6 +8,8 @@ public class Main {
 
         Banco banco = new Banco();
 
+        banco.carregarContas();
+
         int opcao;
 
         do {
@@ -130,7 +132,10 @@ public class Main {
                     break;
 
                 case 0:
-                    System.out.println("\nEncerrando sistema...");
+                    banco.salvarContas();
+
+                    System.out.println("Encerrando o sistema...");
+
                     break;
 
                 default:

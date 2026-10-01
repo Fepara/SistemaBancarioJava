@@ -1,7 +1,62 @@
 import java.util.ArrayList;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.BufferedReader;
+import java.io.FileReader;
 
 public class Banco {
     private final ArrayList<Conta> contas = new ArrayList<>();
+
+    public void salvarContas() {
+
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter("contas.txt"))) {
+
+            for (Conta conta : contas) {
+
+                writer.write(
+                        conta.getNumero() + ";" +
+                                conta.getTitular() + ";" +
+                                conta.getSaldo()
+                );
+
+                writer.newLine();
+            }
+
+        } catch (IOException e) {
+
+            System.out.println("Erro ao salvar as contas.");
+
+        }
+    }
+
+    public void carregarContas() {
+
+        try (BufferedReader reader = new BufferedReader(new FileReader("contas.txt"))) {
+
+            String linha;
+
+            while ((linha = reader.readLine()) != null) {
+
+                String[] dados = linha.split(";");
+
+                int numero = Integer.parseInt(dados[0]);
+                String titular = dados[1];
+                double saldo = Double.parseDouble(dados[2]);
+
+                Conta conta = new Conta(numero, titular);
+
+                conta.definirSaldo(saldo);
+
+                contas.add(conta);
+            }
+
+        } catch (IOException e) {
+
+            System.out.println("Nenhum arquivo de contas encontrado.");
+
+        }
+    }
 
     public void adicionarConta(Conta conta) {
         contas.add(conta);
