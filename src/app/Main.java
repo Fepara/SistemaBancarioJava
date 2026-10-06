@@ -1,4 +1,8 @@
+package app;
+import model.Conta;
+import service.Banco;
 import java.util.Scanner;
+import java.util.InputMismatchException;
 
 public class Main {
 
@@ -24,16 +28,26 @@ public class Main {
             System.out.println("6 - Ver Extrato");
             System.out.println("0 - Sair");
 
-            System.out.print("Escolha uma opção: ");
-            opcao = scanner.nextInt();
+            try {
+
+                System.out.print("Escolha uma opção: ");
+                opcao = scanner.nextInt();
+
+            } catch (InputMismatchException e) {
+
+                System.out.println("Digite apenas números!");
+
+                scanner.nextLine();
+
+                opcao = -1;
+            }
 
             switch (opcao) {
                 case 1:
 
                     System.out.println("\n=== Criar Conta ===");
 
-                    System.out.print("Número da conta: ");
-                    int numero = scanner.nextInt();
+                    int numero = lerInteiro(scanner, "Número da conta: ");
 
                     scanner.nextLine();
 
@@ -59,17 +73,14 @@ public class Main {
 
                     System.out.println("\n=== Depósito ===");
 
-                    System.out.println("Número da conta: ");
-                    int numeroConta = scanner.nextInt();
+                    int numeroConta = lerInteiro(scanner, "Número da conta: ");
 
-                    System.out.println("Valor do depósito: ");
-                    double valorDeposito = scanner.nextDouble();
-
+                    double valorDeposito = lerDouble(scanner, "Valor do depósito: ");
 
                     if (banco.depositar(numeroConta, valorDeposito)) {
                         System.out.println("Depósito realizado com sucesso!");
                     } else {
-                        System.out.println("Não foi possível realizar o depósito!");
+                        System.out.println("Conta não encontrada ou valor inválido!");
                     }
 
                     break;
@@ -78,16 +89,14 @@ public class Main {
 
                     System.out.println("\n=== Saque ===");
 
-                    System.out.println("Número da conta: ");
-                    int numeroContaSaque = scanner.nextInt();
+                    int numeroContaSaque = lerInteiro(scanner, "Número da conta: ");
 
-                    System.out.println("Valor da saque: ");
-                    double valorSaque = scanner.nextDouble();
+                    double valorSaque = lerDouble(scanner, "Valor do saque: ");
 
                     if (banco.sacar(numeroContaSaque, valorSaque)) {
                         System.out.println("Saque realizado com sucesso!");
                     } else {
-                        System.out.println("Não foi possível realizar o saque!");
+                        System.out.println("Conta não encontrada, saldo insuficiente ou valor inválido!");
                     }
 
                     break;
@@ -96,19 +105,16 @@ public class Main {
 
                     System.out.println("\n=== Transferência ===");
 
-                    System.out.println("Número da conta de origem: ");
-                    int numeroContaTransferir = scanner.nextInt();
+                    int origem = lerInteiro(scanner, "Conta de origem: ");
 
-                    System.out.println("Número da conta de destino: ");
-                    int numeroContaDestino = scanner.nextInt();
+                    int destino = lerInteiro(scanner, "Conta de destino: ");
 
-                    System.out.println("Valor da transferência");
-                    double valorTransferencia = scanner.nextDouble();
+                    double valorTransferencia = lerDouble(scanner, "Valor da transferência: ");
 
-                    if (banco.transferir(numeroContaTransferir, numeroContaDestino, valorTransferencia)) {
+                    if (banco.transferir(origem, destino, valorTransferencia)) {
                         System.out.println("Transferência realizada com sucesso!");
                     } else {
-                            System.out.println("Transferencia não realizada!");
+                        System.out.println("Transferência não realizada!");
                     }
 
                     break;
@@ -117,12 +123,11 @@ public class Main {
 
                     System.out.println("\n=== Extrato ===");
 
-                    System.out.println("Número da conta: ");
-                    int numeroContaExtrato = scanner.nextInt();
+                    int numeroExtrato = lerInteiro(scanner, "Número da conta: ");
 
-                    Conta contaExtrato = banco.buscarConta(numeroContaExtrato);
+                    Conta contaExtrato = banco.buscarConta(numeroExtrato);
 
-                    if(contaExtrato != null) {
+                    if (contaExtrato != null) {
                         contaExtrato.mostrarDados();
                         contaExtrato.mostrarHistorico();
                     } else {
@@ -144,6 +149,36 @@ public class Main {
 
         } while (opcao != 0);
 
+        scanner.close();
+
+    }
+
+    public static int lerInteiro(Scanner scanner, String mensagem) {
+
+        while (true) {
+            try {
+                System.out.print(mensagem);
+                return scanner.nextInt();
+
+            } catch (InputMismatchException e) {
+                System.out.println("Digite um número inteiro válido!");
+                scanner.nextLine();
+            }
+        }
+    }
+
+    public static double lerDouble(Scanner scanner, String mensagem) {
+
+        while (true) {
+            try {
+                System.out.print(mensagem);
+                return scanner.nextDouble();
+
+            } catch (InputMismatchException e) {
+                System.out.println("Digite um número válido!");
+                scanner.nextLine();
+            }
+        }
     }
 
 }

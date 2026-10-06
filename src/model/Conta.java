@@ -1,14 +1,15 @@
+package model;
 import java.util.ArrayList;
 
 public class Conta {
 
-    // ATRIBUTOS
+
     private final  int numero;
     private final String titular;
     private double saldo;
     private final ArrayList<String> historico;
 
-    // CONSTRUTOR
+
     public Conta(int numero, String titular) {
         this.numero = numero;
         this.titular = titular;

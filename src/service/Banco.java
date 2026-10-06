@@ -1,3 +1,5 @@
+package service;
+import model.Conta;
 import java.util.ArrayList;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -8,9 +10,11 @@ import java.io.FileReader;
 public class Banco {
     private final ArrayList<Conta> contas = new ArrayList<>();
 
+    private static final String ARQUIVO_CONTAS = "contas.txt";
+
     public void salvarContas() {
 
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter("contas.txt"))) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(ARQUIVO_CONTAS))) {
 
             for (Conta conta : contas) {
 
@@ -32,7 +36,7 @@ public class Banco {
 
     public void carregarContas() {
 
-        try (BufferedReader reader = new BufferedReader(new FileReader("contas.txt"))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(ARQUIVO_CONTAS))) {
 
             String linha;
 
@@ -58,7 +62,7 @@ public class Banco {
         }
     }
 
-    public void adicionarConta(Conta conta) {
+    private void adicionarConta(Conta conta) {
         contas.add(conta);
     }
 
